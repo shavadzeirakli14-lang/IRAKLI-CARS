@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRAKLI CARS</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#080808;
+    color:white;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:#111;
+    padding:18px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #292929;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff3131;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+}
+
+.hero{
+    min-height:420px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px 20px;
+    background:
+    linear-gradient(#0008,#0008),
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1800&q=85")
+    center/cover;
+}
+
+.hero h1{
+    font-size:65px;
+}
+
+.hero p{
+    margin-top:15px;
+    font-size:20px;
+    color:#ddd;
+}
+
+.search{
+    padding:30px 5%;
+    text-align:center;
+}
+
+.search input{
+    width:min(700px,95%);
+    padding:17px 20px;
+    border:none;
+    border-radius:30px;
+    background:#1c1c1c;
+    color:white;
+    font-size:17px;
+    outline:none;
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:0 5% 30px;
+}
+
+.filters button{
+    background:#191919;
+    color:white;
+    border:1px solid #333;
+    padding:11px 18px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.filters button:hover{
+    background:#ff3131;
+}
+
+.grid{
+    width:90%;
+    max-width:1500px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    padding-bottom:50px;
+}
+
+.card{
+    background:#121212;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid #292929;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+    border-color:#ff3131;
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+}
+
+.info{
+    padding:18px;
+}
+
+.info h2{
+    margin-bottom:8px;
+}
+
+.brand{
+    color:#ff3838;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.specs{
+    color:#bbb;
+    line-height:1.8;
+}
+
+.price{
+    font-size:22px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.details{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:10px;
+    background:#ff3030;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.details:hover{
+    background:#d90000;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:#000c;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal-box{
+    background:#151515;
+    width:min(700px,100%);
+    max-height:90vh;
+    overflow:auto;
+    border-radius:20px;
+    padding:20px;
+}
+
+.modal-box img{
+    width:100%;
+    max-height:350px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.close{
+    float:right;
+    font-size:30px;
+    cursor:pointer;
+}
+
+footer{
+    text-align:center;
+    padding:35px;
+    background:#111;
+    color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">IRAKLI CARS</div>
+    <nav>
+        <a href="#">მთავარი</a>
+        <a href="#cars">მანქანები</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>IRAKLI CARS</h1>
+        <p>ყველაზე მაგარი მანქანების კატალოგი 🚘</p>
+    </div>
+</section>
+
+<div class="search">
+    <input id="search" type="text" placeholder="🔎 მოძებნე მანქანა...">
+</div>
+
+<div class="filters">
+    <button onclick="filterCars('all')">ყველა</button>
+    <button onclick="filterCars('BMW')">BMW</button>
+    <button onclick="filterCars('Mercedes')">Mercedes</button>
+    <button onclick="filterCars('Audi')">Audi</button>
+    <button onclick="filterCars('Porsche')">Porsche</button>
+    <button onclick="filterCars('Lamborghini')">Lamborghini</button>
+    <button onclick="filterCars('Ferrari')">Ferrari</button>
+    <button onclick="filterCars('Toyota')">Toyota</button>
+    <button onclick="filterCars('Nissan')">Nissan</button>
+</div>
+
+<section id="cars" class="grid"></section>
+
+<div id="modal" class="modal">
+    <div class="modal-box">
+        <span class="close" onclick="closeModal()">×</span>
+        <img id="modalImg">
+        <h1 id="modalTitle"></h1>
+        <br>
+        <p id="modalInfo"></p>
+    </div>
+</div>
+
+<footer>
+    © 2026 IRAKLI CARS
+</footer>
+
+<script>
+
+const cars = [
+
+{
+brand:"BMW",
+model:"M5 Competition",
+hp:727,
+speed:305,
+price:"$120,000",
+img:"https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Mercedes",
+model:"AMG GT",
+hp:577,
+speed:315,
+price:"$180,000",
+img:"https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Audi",
+model:"RS7",
+hp:591,
+speed:305,
+price:"$130,000",
+img:"https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Porsche",
+model:"911 Turbo S",
+hp:640,
+speed:330,
+price:"$230,000",
+img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Lamborghini",
+model:"Huracan",
+hp:631,
+speed:325,
+price:"$250,000",
+img:"https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Ferrari",
+model:"488 GTB",
+hp:661,
+speed:330,
+price:"$280,000",
+img:"https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Toyota",
+model:"Supra GR",
+hp:382,
+speed:250,
+price:"$65,000",
+img:"https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?auto=format&fit=crop&w=1000&q=85"
+},
+
+{
+brand:"Nissan",
+model:"GT-R",
+hp:565,
+speed:315,
+price:"$115,000",
+img:"https://images.unsplash.com/photo-1597007066704-67bf2068d5b0?auto=format&fit=crop&w=1000&q=85"
+}
+
+];
+
+const extraImages = [
+"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=85",
+"https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1000&q=85",
+"https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=85",
+"https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1000&q=85"
+];
+
+let allCars=[...cars];
+
+const brands=[
+"BMW","Mercedes","Audi","Porsche",
+"Lamborghini","Ferrari","Toyota","Nissan"
+];
+
+const models=[
+"M3","M4","M5","M8","AMG GT","C63 AMG",
+"RS3","RS5","RS6","RS7","911","Cayenne",
+"Panamera","Huracan","Urus","488",
+"Supra","GT-R","GR86"
+];
+
+for(let i=0;i<100;i++){
+
+    let brand=brands[Math.floor(Math.random()*brands.length)];
+    let model=models[Math.floor(Math.random()*models.length)];
+
+    allCars.push({
+        brand:brand,
+        model:model,
+        hp:300+Math.floor(Math.random()*1000),
+        speed:220+Math.floor(Math.random()*150),
+        price:"$"+(Math.floor(50+Math.random()*500))+",000",
+        img:extraImages[i%extraImages.length]
+    });
+}
+
+const container=document.getElementById("cars");
+
+function showCars(list){
+
+    container.innerHTML="";
+
+    list.forEach((car,index)=>{
+
+        container.innerHTML+=`
+
+        <article class="card">
+
+            <img src="${car.img}" alt="${car.brand} ${car.model}">
+
+            <div class="info">
+
+                <div class="brand">${car.brand}</div>
+
+                <h2>${car.model}</h2>
+
+                <div class="specs">
+                    ⚡ ${car.hp} HP<br>
+                    🏁 ${car.speed} km/h
+                </div>
+
+                <div class="price">${car.price}</div>
+
+                <button class="details"
+                onclick="openModal(${index})">
+                დეტალები
+                </button>
+
+            </div>
+
+        </article>
+
+        `;
+    });
+}
+
+function openModal(index){
+
+    let car=allCars[index];
+
+    document.getElementById("modalImg").src=car.img;
+
+    document.getElementById("modalTitle").innerText=
+    car.brand+" "+car.model;
+
+    document.getElementById("modalInfo").innerHTML=
+    `
+    🚘 ბრენდი: ${car.brand}<br><br>
+    🏎 მოდელი: ${car.model}<br><br>
+    ⚡ სიმძლავრე: ${car.hp} HP<br><br>
+    🏁 მაქსიმალური სიჩქარე: ${car.speed} km/h<br><br>
+    💰 ფასი: ${car.price}
+    `;
+
+    document.getElementById("modal").style.display="flex";
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+}
+
+function filterCars(brand){
+
+    if(brand==="all"){
+        showCars(allCars);
+        return;
+    }
+
+    showCars(
+        allCars.filter(car=>car.brand===brand)
+    );
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+    let text=this.value.toLowerCase();
+
+    showCars(
+        allCars.filter(car=>
+            (car.brand+" "+car.model)
+            .toLowerCase()
+            .includes(text)
+        )
+    );
+
+});
+
+showCars(allCars);
+
+</script>
+
+</body>
+</html>
+</body>
+</html>
